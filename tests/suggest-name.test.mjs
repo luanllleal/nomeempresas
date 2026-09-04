@@ -4,7 +4,7 @@ import suggestName from '../netlify/functions/suggest-name.js';
 
 const validOutput = JSON.stringify({
   suggestedWords: ['Nexa', 'Clara', 'Pulso', 'Norte', 'Fluxo', 'Brio', 'duas palavras? comentário'],
-  suggestedNames: ['Nexa Norte', 'Clara Labs', 'Pulso Digital', 'Brio Uno'],
+  suggestedNames: ['Nexa Norte', 'Clara Labs', 'Pulso Digital', 'Brio Uno', 'Nome Um,Nome Dois,Nome Três'],
   notes: ['Direção curta e contemporânea.']
 });
 
@@ -63,6 +63,7 @@ test('usa Responses API e percorre a cadeia de fallback', async () => {
   assert.equal(body.suggestions.modelUsed, 'gpt-5.6-terra');
   assert.equal(body.suggestions.notes[0], 'Direção curta e contemporânea.');
   assert.equal(body.suggestions.suggestedWords.some((word) => /\s/.test(word)), false);
+  assert.equal(body.suggestions.suggestedNames.some((name) => name.includes(',')), false);
   assert.deepEqual(body.suggestions.suggestedNames, [
     'Nexa Norte',
     'Clara Labs',

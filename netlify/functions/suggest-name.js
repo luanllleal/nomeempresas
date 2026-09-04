@@ -114,10 +114,11 @@ exports.handler = async (event) => {
     }
 
     const body = JSON.parse(event.body || '{}');
-    const primaryModel = process.env.OPENAI_MODEL || 'gpt-5.6';
-    const fallbackModel = process.env.OPENAI_FALLBACK_MODEL || 'gpt-4.1';
+    const primaryModel = process.env.OPENAI_MODEL || 'gpt-5.6-sol';
+    const fallbackModel = process.env.OPENAI_FALLBACK_MODEL || 'gpt-5.6-terra';
+    const tertiaryModel = 'gpt-4.1';
 
-    const attempts = [primaryModel, fallbackModel];
+    const attempts = [primaryModel, fallbackModel, tertiaryModel];
     const errors = [];
 
     for (const model of attempts) {

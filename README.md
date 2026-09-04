@@ -27,8 +27,8 @@ cp .env.example .env
 
 ```bash
 OPENAI_API_KEY=COLE_SUA_CHAVE_AQUI
-OPENAI_MODEL=gpt-5.6
-OPENAI_FALLBACK_MODEL=gpt-4.1
+OPENAI_MODEL=gpt-5.6-sol
+OPENAI_FALLBACK_MODEL=gpt-5.6-terra
 ```
 
 3. Inicie o projeto.
@@ -53,7 +53,9 @@ git push origin main
 - Functions directory: `netlify/functions`
 - Variáveis de ambiente:
   - `OPENAI_API_KEY` (sua chave)
-  - `OPENAI_MODEL=gpt-5.6`
-  - `OPENAI_FALLBACK_MODEL=gpt-4.1`
+  - `OPENAI_MODEL=gpt-5.6-sol`
+  - `OPENAI_FALLBACK_MODEL=gpt-5.6-terra`
+
+Observação: o fallback final no servidor também tenta `gpt-4.1`, para manter operação se houver indisponibilidade temporária de 5.6.
 
 Deploy automático é disparado no push do `main`.

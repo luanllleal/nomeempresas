@@ -188,11 +188,6 @@ function App() {
     }
   }, [baseWords, businessContext, composer.parts]);
 
-  useEffect(() => {
-    activeRequest.current?.abort();
-    const timeout = window.setTimeout(() => void runSuggestions(), 1100);
-    return () => window.clearTimeout(timeout);
-  }, [runSuggestions]);
   useEffect(() => () => {
     activeRequest.current?.abort();
     window.clearTimeout(copyTimer.current);
@@ -377,10 +372,10 @@ function App() {
           <aside className="card suggestions-panel" aria-labelledby="suggestions-title">
             <header className="suggestions-header">
               <div>
-                <span>Sugestões atualizadas automaticamente</span>
+                <span>Preencha os campos e clique para gerar</span>
                 <h2 id="suggestions-title">Sugestões da IA</h2>
               </div>
-              <button type="button" onClick={() => void runSuggestions()} disabled={loading}>{loading ? 'Gerando...' : 'Gerar novamente'}</button>
+              <button type="button" onClick={() => void runSuggestions()} disabled={loading}>{loading ? 'Gerando...' : 'Gerar sugestões'}</button>
             </header>
 
             {error && (

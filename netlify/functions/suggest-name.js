@@ -136,7 +136,7 @@ class OpenAIRequestError extends Error {
   }
 }
 
-const callOpenAI = async (apiKey, model, input, reasoningEffort) => {
+const callOpenAI = async (apiKey, model, input, reasoningEffort, timeoutMs) => {
   const response = await fetch(OPENAI_API_URL, {
     method: 'POST',
     headers: {
@@ -144,7 +144,7 @@ const callOpenAI = async (apiKey, model, input, reasoningEffort) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(makePayload(model, input, reasoningEffort)),
-    signal: AbortSignal.timeout(55_000)
+    signal: AbortSignal.timeout(timeoutMs)
   });
 
   const raw = await response.json().catch(() => ({}));
@@ -220,9 +220,11 @@ export default async (request) => {
   ].filter(Boolean))];
   const failures = [];
 
-  for (const model of models) {
+  for (const [modelIndex, model] of models.entries()) {
     try {
-      const suggestions = await callOpenAI(apiKey, model, input, safeEffort);
+      const timeoutMs = [28_000, 14_000, 8_000][modelIndex] ?? 8_000;
+      const attemptEffort = modelIndex === 0 ? safeEffort : 'medium';
+      const suggestions = await callOpenAI(apiKey, model, input, attemptEffort, timeoutMs);
       return jsonResponse({ suggestions });
     } catch (error) {
       failures.push({

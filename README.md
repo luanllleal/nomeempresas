@@ -1,12 +1,14 @@
 # NomeEmpresas IA
 
-Aplicação web para criar nomes de empresas com ajuda de IA em tempo real.
+Aplicação web para criar nomes de empresas com curadoria de IA em tempo real.
 
 - Montagem de nome no centro (prefixo, raiz e sufixo).
 - Sugestões contínuas da IA conforme você digita perfil, contexto e palavras-chave.
 - Opções de palavras e nomes sugeridos pela IA.
 - Favoritos e cópia rápida.
-- Undo/Redo da montagem atual.
+- Desfazer/refazer da montagem atual.
+- Favoritos persistidos localmente no navegador.
+- Interface escura responsiva com fluxo em três etapas.
 
 ## Como rodar localmente
 
@@ -29,11 +31,14 @@ cp .env.example .env
 OPENAI_API_KEY=COLE_SUA_CHAVE_AQUI
 OPENAI_MODEL=gpt-5.6-sol
 OPENAI_FALLBACK_MODEL=gpt-5.6-terra
+OPENAI_REASONING_EFFORT=max
 ```
 
 3. Inicie o projeto.
 
-> Em produção, a chave é lida por variável de ambiente no Netlify Functions, não no frontend.
+> Em produção, a chave é lida por variável de ambiente na Netlify Function, nunca no frontend.
+
+A função usa a Responses API, Structured Outputs e `reasoning.effort=max` no GPT-5.6 Sol. Se o modelo principal estiver indisponível, tenta GPT-5.6 Terra e depois GPT-4.1.
 
 ## Deploy no Netlify
 
@@ -55,7 +60,8 @@ git push origin main
   - `OPENAI_API_KEY` (sua chave)
   - `OPENAI_MODEL=gpt-5.6-sol`
   - `OPENAI_FALLBACK_MODEL=gpt-5.6-terra`
+  - `OPENAI_REASONING_EFFORT=max`
 
-Observação: o fallback final no servidor também tenta `gpt-4.1`, para manter operação se houver indisponibilidade temporária de 5.6.
+Observação: o fallback final no servidor também tenta `gpt-4.1`, para manter a operação se houver indisponibilidade temporária da família 5.6.
 
 Deploy automático é disparado no push do `main`.
